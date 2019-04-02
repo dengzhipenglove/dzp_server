@@ -8,7 +8,7 @@
 #define _MAX_FDSIZE_    2048
 
 namespace dzp{
-socketEvent::socketEvent()
+socketEvent::socketEvent():listenFd(-1),epollFd(-1)
 {
 
 }
