@@ -34,9 +34,17 @@ bool socketEvent::createListener()
     struct sockaddr_in addr;
     memset((char *) &addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(10001);
-    addr.sin_addr.s_addr = inet_addr();
+    addr.sin_port = htons(listenPort);
+    addr.sin_addr.s_addr = inet_addr(listenAddr);
+
     listenFd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    bind(listenFd, (struct sockaddr *)&addr, sizeof(addr));
+    listen(listenFd,5);
+
+    socklen_t clilen;
+    struct sockaddr_in cliendAddr;
+    connFd = accept(listenFd,(struct sockaddr *)cliendAddr,&clilen);
+    //EINTER accept被信号中断
 }
 
 

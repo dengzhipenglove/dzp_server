@@ -15,6 +15,9 @@ class socketEvent
     private:
         int epollFd;
         int listenFd;
+        int listenPort;
+        char listenAddr[32];
+        int connFd;
 
 };
 
