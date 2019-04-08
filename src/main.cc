@@ -3,7 +3,7 @@
 
 int main(int argc,char *argv[])
 {
-    dzp::socketEvent server;
+    dzp::SocketEvent server;
 
     return 0;
 }

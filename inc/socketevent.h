@@ -4,11 +4,11 @@
 
 namespace dzp {
 
-class socketEvent
+class SocketEvent
 {
     public:
-        socketEvent();
-        ~socketEvent();
+        SocketEvent();
+        ~SocketEvent();
         bool instance();
         bool epollInit();
         bool createListener();

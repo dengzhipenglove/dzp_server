@@ -15,25 +15,25 @@
 
 namespace dzp {
 
-socketEvent::socketEvent():listenFd(-1),epollFd(-1)
+SocketEvent::SocketEvent():listenFd(-1),epollFd(-1)
 {
 
 }
-socketEvent::~socketEvent()
-{
-
-}
-
-bool socketEvent::epollInit()
-{
-
-}
-bool socketEvent::instance()
+SocketEvent::~SocketEvent()
 {
 
 }
 
-bool socketEvent::createListener()
+bool SocketEvent::epollInit()
+{
+
+}
+bool SocketEvent::instance()
+{
+
+}
+
+bool SocketEvent::createListener()
 {
     struct sockaddr_in addr;
     memset( (char *) &addr, 0, sizeof(addr) );
@@ -63,12 +63,12 @@ bool socketEvent::createListener()
     }
     return true;
 }
-void socketEvent::setSocketOpt()
+void SocketEvent::setSocketOpt()
 {
 
 }
 
-void socketEvent::epollCreate()
+void SocketEvent::epollCreate()
 {
     epollFd = epoll_create( _MAX_EPOLL_EVENT_ );
     if( epollFd < 0 )
@@ -77,7 +77,7 @@ void socketEvent::epollCreate()
         exit(-1);
     }
 }
-void socketEvent::epollAddListener( int listenfd_ )
+void SocketEvent::epollAddListener( int listenfd_ )
 {
     ev.events = EPOLLIN;
     ev.data.fd = listenfd_;
@@ -88,7 +88,7 @@ void socketEvent::epollAddListener( int listenfd_ )
     }
 }
 
-void socketEvent::run()
+void SocketEvent::run()
 {
     if( epollFd == -1 )
     {
@@ -118,7 +118,7 @@ void socketEvent::run()
         }
     }
 }
-void socketEvent::processListenReq()
+void SocketEvent::processListenReq()
 {
     int connFd_;
     socklen_t clilen_ = sizeof(struct sockaddr_in);
@@ -134,7 +134,7 @@ void socketEvent::processListenReq()
         exit(-1);
     }
 }
-void socketEvent::processConnectedFD( int fd_)
+void SocketEvent::processConnectedFD( int fd_)
 {
     
 }
