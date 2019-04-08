@@ -4,6 +4,7 @@
 #include <string.h>    //memset
 #include <arpa/inet.h> //htons
 #include <netinet/in.h>  //地址格式
+#include <fcntl.h>
 //#include <sys/epoll.h>
 #include <stdio.h>
 
@@ -112,7 +113,7 @@ void SocketEvent::run()
             }
             else
             {
-                processConnectedFD(events[i].data.fd);
+                processConnectedFD( events + i );
             }
             
         }
@@ -133,10 +134,39 @@ void SocketEvent::processListenReq()
         perror( "epoll_ctl: conn_sock" );
         exit(-1);
     }
+    setNoBlock( connFd_ );
 }
-void SocketEvent::processConnectedFD( int fd_)
+void SocketEvent::processConnectedFD( struct epoll_event* ev_ )
 {
     
+}
+
+void SocketEvent::setNoBlock( int fd_ )
+{
+    int flags = fcntl( fd_, F_GETFL, 0 );
+    flags = flags | O_NONBLOCK;
+    fcntl( fd_, F_SETFL, flags );
+}
+
+int SocketEvent::setSocketOpt(int fd_)
+{
+    int rec_buffer_size = 8388608;
+    int snd_buffer_size = 16777216;
+    int reuseaddr = 1;
+    if( setsockopt(fd_, SOL_SOCKET, SO_RCVBUF , &rec_buffer_size, sizeof(rec_buffer_size)) < 0 )
+    {
+        return -1;
+    }
+    if( setsockopt(fd_, SOL_SOCKET, SO_SNDBUF , &snd_buffer_size, sizeof(snd_buffer_size)) < 0 )
+    {
+        return -1;
+    }
+    if( setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR , &reuseaddr, sizeof(reuseaddr)) < 0 )
+    {
+        return -1;
+    }
+
+    return 0;
 }
 
 } //namespace dzp
