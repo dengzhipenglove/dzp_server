@@ -4,7 +4,7 @@
 #include <string.h>    //memset
 #include <arpa/inet.h> //htons
 #include <netinet/in.h>  //地址格式
-#include <sys/epoll.h>
+//#include <sys/epoll.h>
 #include <stdio.h>
 
 #include "socketevent.h"
@@ -48,7 +48,7 @@ bool socketEvent::createListener()
         exit(-1);
     }
 
-    int rc = bind( listenFd, (struct sockaddr *)&addr, sizeof(addr) )
+    int rc = bind( listenFd, (struct sockaddr *)&addr, sizeof(addr) );
     if( rc < 0 )
     {
         printf("bind socket failed");
@@ -79,7 +79,7 @@ void socketEvent::epollCreate()
 }
 void socketEvent::epollAddListener( int listenfd_ )
 {
-    ev.enents = EPOLLIN;
+    ev.events = EPOLLIN;
     ev.data.fd = listenfd_;
     if( epoll_ctl( epollFd, EPOLL_CTL_ADD, listenfd_, &ev ) == -1 )
     {
@@ -100,7 +100,7 @@ void socketEvent::run()
     if( nfds == -1 )
     {
         perror("epoll wait nfds = -1");
-        return -1;
+        exit(-1);
     }
     else
     {
@@ -123,11 +123,11 @@ void socketEvent::processListenReq()
     int connFd_;
     socklen_t clilen_ = sizeof(struct sockaddr_in);
     struct sockaddr_in cliendAddr_;
-    connFd_ = accept( listenFd, (struct sockaddr *)cliendAddr_, &clilen_ );
+    connFd_ = accept( listenFd, (struct sockaddr *)&cliendAddr_, &clilen_ );
     if( connFd_ == -1 )
         return;
     ev.events == EPOLLIN;
-    ev.fd.data == connFd_;
+    ev.data.fd == connFd_;
     if( epoll_ctl( epollFd, EPOLL_CTL_ADD, connFd_, &ev) == -1 )
     {
         perror( "epoll_ctl: conn_sock" );

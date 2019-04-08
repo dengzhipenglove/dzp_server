@@ -1,7 +1,8 @@
 #ifndef _SOCKET_EVENT_H_
 #define _SOCKET_EVENT_H_
-namespace dzp{
+#include <sys/epoll.h>
 
+namespace dzp {
 
 class socketEvent
 {
@@ -20,7 +21,7 @@ class socketEvent
 
     private:
         
-        int listenFd;
+        int listenFd; 
         int listenPort;
         char listenAddr[32];
         //int connFd;

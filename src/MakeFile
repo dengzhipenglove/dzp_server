@@ -1,2 +1,2 @@
 
-g++  main.cc socketevent.cc -L../inc  -o dzpserver
+g++  main.cc socketevent.cc -I../inc  -o dzpserver
