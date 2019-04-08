@@ -12,6 +12,7 @@
 #define _MAX_EPOLL_EVENT_ 2048
 
 namespace dzp{
+
 socketEvent::socketEvent():listenFd(-1),epollFd(-1)
 {
 
@@ -99,9 +100,10 @@ void socketEvent::run()
         perror("epoll wait nfds = -1");
         return -1;
     }
+    //TODO::timeout
     /*else if( nfds == 0 )
     {
-        //TODO::timeout
+        
     }
     */
     else
@@ -123,7 +125,7 @@ void socketEvent::run()
 void socketEvent::processListenReq()
 {
     int connFd_;
-    socklen_t clilen_;
+    socklen_t clilen_ = sizeof(struct sockaddr_in);
     struct sockaddr_in cliendAddr_;
     connFd_ = accept( listenFd, (struct sockaddr *)cliendAddr_, &clilen_ );
     if( connFd_ == -1 )
@@ -140,3 +142,5 @@ void socketEvent::processConnectedFD( int fd_)
 {
     
 }
+
+}//namespace dzp
