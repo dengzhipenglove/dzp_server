@@ -10,8 +10,7 @@ class Config{
     public:
         Config(char * configFile);
         static Config* instance();
-        int asInt();
-        std::string asString();
+        std::string getValue(std::string key);
         void debugPrintConfig();
     private:
         std::map<std::string,std::string> config_;

@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <fstream>
 #include <string>
-
+#include <stdio.h>
 #include "config.h"
 
 extern char serverConfigFileName[256];   //服务器基本配置文件路径名
@@ -26,7 +26,7 @@ Config::Config( char * configFile )
         }
 
         inFile.close();
-        debugPrintConfig();
+        //debugPrintConfig();
         return;
     }
     exit(-1);
@@ -46,13 +46,13 @@ Config* Config::instance()
     }
     return instance_;
 }
-int Config::asInt()
-{
 
-}
-std::string Config::asString()
+std::string Config::getValue(std::string key)
 {
-
+    std::map<std::string,std::string>::iterator itr = config_.find(key);
+    if( itr == config_.end())
+        return "";
+    return itr->second;
 }
 
 void Config::debugPrintConfig()
@@ -61,7 +61,7 @@ void Config::debugPrintConfig()
     {
         return;
     }
-    printf("\n配置文件读取后的内容如下：");
+    printf("\n配置文件读取后的内容如下\n：");
     for( std::map<std::string,std::string>::iterator itr = config_.begin(); itr != config_.end(); ++itr )
     {
         printf("-%s = %s-\n",itr->first.c_str(),itr->second.c_str());
