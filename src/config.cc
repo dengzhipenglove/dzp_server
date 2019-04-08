@@ -26,9 +26,9 @@ Config::Config( char * configFile )
         }
 
         inFile.close();
-        //debugPrintConfig();
         return;
     }
+    printf("failed to open %s",configFile);
     exit(-1);
 }
 
@@ -61,7 +61,6 @@ void Config::debugPrintConfig()
     {
         return;
     }
-    printf("\n配置文件读取后的内容如下\n：");
     for( std::map<std::string,std::string>::iterator itr = config_.begin(); itr != config_.end(); ++itr )
     {
         printf("-%s = %s-\n",itr->first.c_str(),itr->second.c_str());
