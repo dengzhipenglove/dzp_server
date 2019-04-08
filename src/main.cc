@@ -1,5 +1,9 @@
 
 #include "socketevent.h"
+#include "config.h"
+
+char serverConfigFileName[256]={0};
+
 
 int main(int argc,char *argv[])
 {
