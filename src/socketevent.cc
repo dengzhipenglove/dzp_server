@@ -1,17 +1,19 @@
 
-#include<sys/socket.h> //socket()
-#include<string.h>    //memset
-#include<arpa/inet.h> //htons
+#include <stdlib.h>
+#include <sys/socket.h> //socket()
+#include <string.h>    //memset
+#include <arpa/inet.h> //htons
 #include <netinet/in.h>  //地址格式
 #include <sys/epoll.h>
-#include<stdio.h>
+#include <stdio.h>
+
 #include "socketevent.h"
 
 #define _MAX_FDSIZE_    2048
 #define _LISTEN_PORT_   11111
 #define _MAX_EPOLL_EVENT_ 2048
 
-namespace dzp{
+namespace dzp {
 
 socketEvent::socketEvent():listenFd(-1),epollFd(-1)
 {
@@ -100,12 +102,6 @@ void socketEvent::run()
         perror("epoll wait nfds = -1");
         return -1;
     }
-    //TODO::timeout
-    /*else if( nfds == 0 )
-    {
-        
-    }
-    */
     else
     {
         for( int i = 0; i < nfds ; ++i )
