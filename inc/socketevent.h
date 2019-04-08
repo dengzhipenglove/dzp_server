@@ -12,14 +12,17 @@ class SocketEvent
         bool instance();
         bool epollInit();
         bool createListener();
-        void setSocketOpt();
         void epollCreate();
         void epollAddListener( int listenfd_ );
         void run();
-        void processConnectedFD(struct epoll_event* ev_ );
+        int processConnectedFD(struct epoll_event* ev_ );
         void processListenReq();
         void setNoBlock( int fd_ );
-        int setSocketOpt(int fd_);
+        int setSocketOpt( int fd_ );
+        int closeFd( int fd_ );
+        int readFd(int fd_ );
+        int sendFd(int fd_ );
+        void process(struct epoll_event* ev_ );
 
     private:
         
