@@ -1,7 +1,7 @@
 #ifndef _SOCKET_EVENT_H_
 #define _SOCKET_EVENT_H_
 #include <sys/epoll.h>
-
+#include "client.h.h"
 namespace dzp {
 
 class SocketEvent
@@ -23,6 +23,8 @@ class SocketEvent
         int readFd(int fd_ );
         int sendFd(int fd_ );
         void process(struct epoll_event* ev_ );
+        void readClientData(int fd_);
+        void closeFd(int fd_ );
 
     private:
         
@@ -34,6 +36,10 @@ class SocketEvent
         int epollFd;
         struct epoll_event ev;
         struct epoll_event events[2048];
+
+        map<int, client> _client;
+        typedef map<int,client>::iterator ItrClient;
+        typedef map<int, client> ClientType;
 
 };
 

@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "socketevent.h"
+#include "client.h"
 
 #define _MAX_FDSIZE_    2048
 #define _LISTEN_PORT_   11111
@@ -57,6 +58,13 @@ bool SocketEvent::createListener()
     {
         printf("bind socket failed");
         exit(-1);
+    }
+    
+    setNoBlock( listenFd );
+
+    if( setSocketOpt( listenFd )== -1 ) 
+    {
+        return false;
     }
 
     rc = listen( listenFd, 5 );
@@ -119,14 +127,15 @@ void SocketEvent::processListenReq()
     connFd_ = accept( listenFd, (struct sockaddr *)&cliendAddr_, &clilen_ );
     if( connFd_ == -1 )
         return;
-    ev.events == EPOLLIN;
-    ev.data.fd == connFd_;
+    ev.events = EPOLLIN | EPOLLERR;
+    ev.data.fd = connFd_;
+    setNoBlock( connFd_ );
+    _client[ connfd_ ] = client_( connFd_ );
     if( epoll_ctl( epollFd, EPOLL_CTL_ADD, connFd_, &ev) == -1 )
     {
         perror( "epoll_ctl: conn_sock" );
         exit(-1);
     }
-    setNoBlock( connFd_ );
 }
 
 int SocketEvent::processConnectedFD( struct epoll_event* ev_ )
@@ -162,17 +171,14 @@ int SocketEvent::setSocketOpt( int fd_ )
     return 0;
 }
 
-int SocketEvent::closeFd(int fd_)
-{
-    ::close( fd_ );
-    return 0;
-}
+
 int SocketEvent::readFd(int fd_ )
 {
     if( fd_ == listenFd )
         processListenReq();
     else
     {
+        readClientData( fd_ );
         //TODO 实际读取数据
     }
     
@@ -199,5 +205,28 @@ void SocketEvent::process(struct epoll_event* ev_ )
        sendFd( ev_->data.fd );
     }    
 }
+
+
+void SocketEvent::readClientData(int fd_)
+{
+    ItrClient itr = _client.find(fd);
+    if( itr == _client.end() )
+    {
+        closeFd( fd_ );
+    }
+}
+
+void closeFd(int fd_ )
+{
+    epoll_ctl( epollFd, EPOLL_CTL_DEL, fd_, 0) ;
+    close( fd_ );
+    ItrClient itr = _client.find( fd_ );
+    if( itr != _client.end() )
+    {
+        _client.erase( fd_ );
+    }
+
+}
+
 
 } //namespace dzp
