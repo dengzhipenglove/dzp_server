@@ -26,7 +26,9 @@ class SocketEvent
         void readClientData(int fd_);
         void closeFd(int fd_ );
 
-    private:
+    private:  
+        typedef map<int,client>::iterator ItrClient;
+        typedef map<int, client> ClientType;
         
         int listenFd; 
         int listenPort;
@@ -38,8 +40,7 @@ class SocketEvent
         struct epoll_event events[2048];
 
         map<int, client> _client;
-        typedef map<int,client>::iterator ItrClient;
-        typedef map<int, client> ClientType;
+
 
 };
 
