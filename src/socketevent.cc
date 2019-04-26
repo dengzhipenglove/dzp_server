@@ -104,15 +104,19 @@ void socketEvent::run()
     }
     else
     {
+        
         for( int i = 0; i < nfds ; ++i )
         {
-            if( events[i].data.fd == listenFd )
-            {       
-                processListenReq();
-            }
-            else
+            if(events[i]->events & EPOLLIN)
             {
-                processConnectedFD(events[i].data.fd);
+                if( events[i].data.fd == listenFd )
+                {       
+                    processListenReq();
+                }
+                else
+                {
+                    processConnectedFD(events[i].data.fd);
+                }
             }
             
         }
@@ -136,7 +140,9 @@ void socketEvent::processListenReq()
 }
 void socketEvent::processConnectedFD( int fd_)
 {
+    int rlen = 0;
     
+    rlen = recv( fd_, buf, buflen, 0 );  
 }
 
 } //namespace dzp
