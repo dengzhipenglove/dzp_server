@@ -112,21 +112,16 @@ void SocketEvent::run()
     }
     else
     {
-        
         for( int i = 0; i < nfds ; ++i )
         {
-            if(events[i]->events & EPOLLIN)
-            {
-                if( events[i].data.fd == listenFd )
-                {       
-                    processListenReq();
-                }
-                else
-                {
-                    processConnectedFD(events[i].data.fd);
-                }
+            if( events[i].data.fd == listenFd )
+            {       
+                processListenReq();
             }
-            
+            else
+            {
+                process(events + i);
+            }         
         }
     }
 }
