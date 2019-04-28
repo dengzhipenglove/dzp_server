@@ -115,7 +115,6 @@ void SocketEvent::run()
         
         for( int i = 0; i < nfds ; ++i )
         {
-<<<<<<< HEAD
             if(events[i]->events & EPOLLIN)
             {
                 if( events[i].data.fd == listenFd )
@@ -128,9 +127,6 @@ void SocketEvent::run()
                 }
             }
             
-=======
-            process( events + i );
->>>>>>> c28cf83b96a3b52ea172622022b1354696161c3b
         }
     }
 }
@@ -190,26 +186,9 @@ int SocketEvent::setSocketOpt( int fd_ )
 
 int SocketEvent::readFd(int fd_ )
 {
-<<<<<<< HEAD
     int rlen = 0;
     
     rlen = recv( fd_, buf, buflen, 0 );  
-=======
-    if( fd_ == listenFd )
-        processListenReq();
-    else
-    {
-        readClientData( fd_ );
-        //TODO 实际读取数据
-    }
-    
-    return 0;
-}
-int SocketEvent::sendFd(int fd_ )
-{
-    //TODO 实际写数据
-    return 0;
->>>>>>> c28cf83b96a3b52ea172622022b1354696161c3b
 }
 void SocketEvent::process(struct epoll_event* ev_ )
 {
