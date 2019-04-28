@@ -4,6 +4,7 @@ LinkedClient{
 public:
     LinkedClient():iFd_(0),data_(NULL),icurlen_(0),iheadlen_(0),ibodylen_(0){}
     ~LinkedClient(){}
+    void setDataPtr(char *dataP);
 
 private:
     int iFd_;

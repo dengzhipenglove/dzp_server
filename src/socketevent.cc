@@ -181,9 +181,50 @@ int SocketEvent::setSocketOpt( int fd_ )
 
 int SocketEvent::readFd(int fd_ )
 {
+    // 读取的数据及其指针
+    int iCurIndex=0;
+    int iHeadLen=0;
+    char*buf = NULL;
+    int buflen = 0;
+    //
     int rlen = 0;
-    
-    rlen = recv( fd_, buf, buflen, 0 );  
+    rlen = recv( fd_, buf + iCurIndex, buflen -iCurIndex-1, 0 );  
+    if(rlen == -1)
+    {
+        if( errno != EINTR && errno != EAGAIN)
+        {
+            closeFd( fd_ );
+        }
+        else
+        {
+            /* code */
+        
+        }
+        return -1;
+        
+    }
+    else if(rlen == 0)
+    {
+        closeFd( fd_ );
+    }
+    else{
+        iCurIndex += rlen;
+        if(iHeadLen == 0)
+        {
+            char* Lhead = strstr(buf,"\r\n\r\n");
+            char* Llen = strstr(buf, "Length:");
+            if( Lhead == NULL || Llen == NULL )
+            {
+                return 0;
+            }
+            
+        } 
+
+    }
+
+
+
+
 }
 void SocketEvent::process(struct epoll_event* ev_ )
 {
