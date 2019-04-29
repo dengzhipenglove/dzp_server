@@ -14,7 +14,7 @@ private:
     int  iheadlen_;
     int  ibodylen_;
     //unsigned int  
-}
+};
 
 
 #endif

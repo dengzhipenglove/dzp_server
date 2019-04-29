@@ -14,6 +14,9 @@
 #include "socketevent.h"
 #include "client.h"
 
+#include "message.h"
+#include "datamanage.h"
+
 #define _MAX_FDSIZE_    2048
 #define _LISTEN_PORT_   11111
 #define _MAX_EPOLL_EVENT_ 2048
@@ -184,9 +187,10 @@ int SocketEvent::readFd(int fd_ )
     // 读取的数据及其指针
     int iCurIndex=0;
     int iHeadLen=0;
+    int iBodylen=0;
     char*buf = NULL;
     int buflen = 0;
-    //
+    //TODO:assign value
     int rlen = 0;
     rlen = recv( fd_, buf + iCurIndex, buflen -iCurIndex-1, 0 );  
     if(rlen == -1)
@@ -217,7 +221,29 @@ int SocketEvent::readFd(int fd_ )
             {
                 return 0;
             }
-            
+            iBodylen = atoi(Llen);
+            Lhead =Lhead + strlen("\r\n\r\n");
+            iHeadLen  = Lhead - buf;
+            if( (iHeadLen + iBodylen)>buflen )
+            {
+                char *newbuf = new char[iHeadLen+ibodylen+1];
+                memcpy(newbuf, buf,iCurIndex);
+                *(newbuf+iCurIndex) = 0;
+                delete[] buf;
+                buf = newbuf;
+                buflen = iHeadLen+ibodylen+1;
+                //TODO:reset someting
+            }
+            if(iHeadLen + iBodylen > iCurIndex)
+            {
+                return 0;//继续读取
+            }
+            Message* d = new Message(buf,iHeadLen + iBodylen ,fd_);
+            //data
+            DataManager::instance()->pushReq(d);
+
+
+
         } 
 
     }
