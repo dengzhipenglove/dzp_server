@@ -1,7 +1,11 @@
 #ifndef _SOCKET_EVENT_H_
 #define _SOCKET_EVENT_H_
 #include <sys/epoll.h>
-#include "client.h.h"
+
+#include <map>
+
+#include "linkedclient.h"
+#include "commondef.h"
 namespace dzp {
 
 class SocketEvent
@@ -25,10 +29,11 @@ class SocketEvent
         void process(struct epoll_event* ev_ );
         void readClientData(int fd_);
         void closeFd(int fd_ );
+        int processReaded(ProRead& r);
 
     private:  
-        typedef map<int,client>::iterator ItrClient;
-        typedef map<int, client> ClientType;
+        typedef map<int,LinkedClient>::iterator ItrClient;
+        typedef map<int, LinkedClient> ClientType;
         
         int listenFd; 
         int listenPort;
@@ -39,7 +44,7 @@ class SocketEvent
         struct epoll_event ev;
         struct epoll_event events[2048];
 
-        map<int, client> _client;
+        ClientType _client;
 
 
 };

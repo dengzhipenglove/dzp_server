@@ -12,10 +12,11 @@
 #include <stdio.h>
 
 #include "socketevent.h"
-#include "client.h"
+#include "linkedclient.h"
 
 #include "message.h"
 #include "datamanage.h"
+#include "commondef.h"
 
 #define _MAX_FDSIZE_    2048
 #define _LISTEN_PORT_   11111
@@ -140,7 +141,7 @@ void SocketEvent::processListenReq()
     ev.events = EPOLLIN | EPOLLERR;
     ev.data.fd = connFd_;
     setNoBlock( connFd_ );
-    _client[ connfd_ ] = client_( connFd_ );
+    _client[ connfd_ ] = LinkedClient( connFd_ );
     if( epoll_ctl( epollFd, EPOLL_CTL_ADD, connFd_, &ev) == -1 )
     {
         perror( "epoll_ctl: conn_sock" );
@@ -244,6 +245,7 @@ int SocketEvent::readFd(int fd_ )
 
 
 
+
         } 
 
     }
@@ -251,6 +253,40 @@ int SocketEvent::readFd(int fd_ )
 
 
 
+}
+/*
+    int curIndex;
+    int headLen;
+    int bodyLen;
+    int bufLen;
+    char* buf;
+*/
+int SocketEvent::processReaded(ProRead& r)
+{
+    int remain = r.curIndex - r.headLen -r.bodyLen;
+    if( remain < 0 )
+        return -1;
+    else if( remain == 0 )
+    {
+        *r.buf = 0;
+        r.curIndex = r.headLen = r.bodyLen =0;
+        return 0;
+    }
+    r.curIndex = remain;
+    memcpy(r.buf, r.buf + r.headLen + r.bodyLen, remain);
+    *(r.buf + remain) = 0;
+
+    char *ibody = strstr(r.buf, "\r\n\r\n");
+    char *ilen = strstr(r.buf, "Length:");
+    if( ibody == NULL || ilen == NULL )
+        return 0;
+    ibody += strlen("\r\n\r\n");
+    ilen = atoi("Length");
+    r.bodyLen = ilen;
+    r.headLen = ibody - r.buf;
+    if( r.curIndex >=(r.bodyLen + r.headLen))
+        return 1;
+    return 0; 
 }
 void SocketEvent::process(struct epoll_event* ev_ )
 {

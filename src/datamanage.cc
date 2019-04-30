@@ -1,10 +1,10 @@
 
-
+#include <pthread.h>
 #include"datamanage.h"
 
 
-//pthread_mutex_t lock_ = PTHREAD_MUTEX_INITIALIZER;
-//pthread_cond_t cond_ = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t lock_ = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond_ = PTHREAD_COND_INITIALIZER;
 
 DataManager* DataManager::instance_=NULL;
 DataManager* DataManager::instance()
@@ -22,8 +22,7 @@ DataManager* DataManager::instance()
 
 DataManager::DataManager()
 {
- cond_ = PTHREAD_COND_INITIALIZER;   
- lock_ = PTHREAD_MUTEX_INITIALIZER;
+
 }
 
 void DataManager::pushReq(Message*m)

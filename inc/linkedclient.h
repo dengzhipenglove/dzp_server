@@ -2,9 +2,10 @@
 #define _LINEEDCLIENTED_H_
 LinkedClient{
 public:
-    LinkedClient():iFd_(0),data_(NULL),icurlen_(0),iheadlen_(0),ibodylen_(0){}
+    LinkedClient(fd ):iFd_(fd),data_(NULL),icurlen_(0),iheadlen_(0),ibodylen_(0){}
     ~LinkedClient(){}
     void setDataPtr(char *dataP);
+    int readFD( fd );
 
 private:
     int iFd_;
