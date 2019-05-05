@@ -7,6 +7,7 @@ namespace dzp {
 class LinkedClient
 {
 public:
+    LinkedClient(){}
     LinkedClient(int fd ):iFd_(fd){}
     ProRead& getDataRef();
 private:

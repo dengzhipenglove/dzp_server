@@ -9,12 +9,19 @@ struct ProRead{
     ProRead():curIndex(0),headLen(0),bodyLen(0),bufLen(0),buf(NULL){}
     ProRead(const ProRead& out)
     {
+        if(out.buf == NULL || out.bufLen == 0)
+            return ;
         curIndex = out.curIndex;
         headLen = out.headLen;
         bodyLen = out.bodyLen;
-        bufLen = out.bufLen;
-        buf = new char[out.bufLen];
-        strcpy(buf, out.buf);
+        if( bufLen < out.bufLen)
+        {
+            if(bufLen)
+                delete[] buf;
+            bufLen = out.bufLen;
+            buf = new char[out.bufLen];
+        } 
+        strcpy(buf, out.buf); 
     }
     char* getBUf()
     {
@@ -29,6 +36,7 @@ struct ProRead{
         if(buf)
         {
             delete[] buf;
+            bufLen = 0;
         }
     }
     
