@@ -141,7 +141,7 @@ void SocketEvent::processListenReq()
     ev.events = EPOLLIN | EPOLLERR;
     ev.data.fd = connFd_;
     setNoBlock( connFd_ );
-    _client[ connFd_ ] = LinkedClient( connFd_ );
+    _client[ connFd_ ] = dzp::LinkedClient( connFd_ );
     if( epoll_ctl( epollFd, EPOLL_CTL_ADD, connFd_, &ev) == -1 )
     {
         perror( "epoll_ctl: conn_sock" );
