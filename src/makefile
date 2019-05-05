@@ -17,15 +17,15 @@ OBJS := $(patsubst $(DIR_SOURCE)/%.cc, $(DIR_OBJS)/%.o, $(CPPSOURCE) )
 all: makeobjdir $(DIR_EXEC)/$(EXEC_NAME)
 
 makeobjdir:
-        mkdir -p DIR_OBJS
-        @echo $(CPPSOURCE)
-        @echo $(OBJS)
+	mkdir -p DIR_OBJS
+	@echo $(CPPSOURCE)
+	@echo $(OBJS)
 
 $(DIR_EXEC)/$(EXEC_NAME): $(OBJS)
-        $(CC) -I$(DIR_INCLUDE) $^ -o $@
+	$(CC) -I$(DIR_INCLUDE) $^ -o $@
 
 $(DIR_OBJS)/%.o:$(DIR_SOURCE)/%.cc
-        $(CC) $(FLAGS) -I$(DIR_INCLUDE) -c $< -o $@
+	$(CC) $(FLAGS) -I$(DIR_INCLUDE) -c $< -o $@
 
 clean:
-        rm -f $(DIR_OBJS)/*.o
+	rm -f $(DIR_OBJS)/*.o

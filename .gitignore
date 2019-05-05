@@ -1,4 +1,4 @@
 # .gitignore
 .vscode
 ./src/dzpserver
-
+./obj/*
