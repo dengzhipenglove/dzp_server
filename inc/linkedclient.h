@@ -4,7 +4,8 @@
 
 namespace dzp {
 
-class LinkedClient{
+class LinkedClient
+{
 public:
     LinkedClient(int fd ):iFd_(fd){}
     ProRead& getDataRef();
@@ -13,6 +14,6 @@ private:
     ProRead rs_;
     //unsigned int  
 };
-}
+}  //namespace dzp
 
 #endif
