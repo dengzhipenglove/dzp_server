@@ -1,5 +1,5 @@
 
-#g++  socketevent.cc main.cc -I../inc/   -o dzpserver
+#g++ config.cc datamanage.cc linkedclient.cc  socketevent.cc main.cc -I../inc/   -o dzpserver
 
 
 CC :=g++
@@ -25,7 +25,7 @@ $(DIR_EXEC)/$(EXEC_NAME): $(OBJS)
         $(CC) -I$(DIR_INCLUDE) $^ -o $@
 
 $(DIR_OBJS)/%.o:$(DIR_SOURCE)/%.cc
-        $(CC) $(FLAGS) -I$(DIR_INCLUDE)  $< -o $@
+        $(CC) $(FLAGS) -I$(DIR_INCLUDE) -c $< -o $@
 
 clean:
         rm -f $(DIR_OBJS)/*.o

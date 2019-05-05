@@ -35,11 +35,11 @@ SocketEvent::~SocketEvent()
 
 bool SocketEvent::epollInit()
 {
-
+    return true;
 }
 bool SocketEvent::instance()
 {
-
+    return true;
 }
 
 bool SocketEvent::createListener()
@@ -329,7 +329,7 @@ void SocketEvent::closeFd(int fd_ )
 }
 int SocketEvent::sendFd(int fd_ )
 {
-    
+
 }
 
 } //namespace dzp
