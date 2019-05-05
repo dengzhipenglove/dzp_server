@@ -11,8 +11,8 @@ public:
         fd_ = fd;
     }
 private:
-    string data_;
-    string fd_;
+    std::string data_;
+    std::string fd_;
 };
 
 

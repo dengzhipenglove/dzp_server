@@ -14,7 +14,7 @@ struct ProRead{
         bodyLen = out.bodyLen;
         bufLen = out.bufLen;
         buf = new char[out.bufLen];
-        strcpy(buf, out.bufLen);
+        strcpy(buf, out.buf);
     }
     char* getBUf()
     {
