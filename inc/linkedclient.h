@@ -12,7 +12,7 @@ public:
 private:
     int iFd_;
     ProRead rs_;
-    //unsigned int  
+
 };
 }  //namespace dzp
 
