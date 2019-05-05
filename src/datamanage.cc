@@ -32,15 +32,15 @@ void DataManager::pushReq(Message*m)
     requests_.push(m);
 
     pthread_cond_signal(&cond_);
-    pthread_mutex_unlock(&locak_);
+    pthread_mutex_unlock(&lock_);
 }
 
-Message* DataNanager::popReq()
+Message* DataManager::popReq()
 {
     Message* re =NULL;
     pthread_mutex_lock(&lock_);
     if(requests_.size() == 0)
-        pthread_cont_wait(&cond_, &lock_);
+        pthread_cond_wait(&cond_, &lock_);
     if(requests_.size() == 0)
     {
         pthread_mutex_unlock(&lock_);
