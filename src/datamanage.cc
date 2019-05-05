@@ -9,14 +9,14 @@ pthread_cond_t cond_ = PTHREAD_COND_INITIALIZER;
 DataManager* DataManager::instance_=NULL;
 DataManager* DataManager::instance()
 {
-    if( instance == NULL )
+    if( instance_ == NULL )
     {
         pthread_mutex_lock(&lock_);
-        if( instance == NULL)
-            instance = new DataManager();
+        if( instance_ == NULL)
+            instance_ = new DataManager();
         pthread_mutex_unlock(&lock_);
     }
-    return instance;
+    return instance_;
 }
 
 
