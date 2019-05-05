@@ -195,7 +195,7 @@ int SocketEvent::readFd(int fd_ )
     //rs.
     //TODO:assign value
     int rlen = 0;
-    rlen = recv( fd_, rs.buf + rs.curIndex, rs.buflen -rs.curIndex-1, 0 );  
+    rlen = recv( fd_, rs.buf + rs.curIndex, rs.bufLen -rs.curIndex-1, 0 );  
     if(rlen == -1)
     {
         if( errno != EINTR && errno != EAGAIN)
@@ -227,14 +227,14 @@ int SocketEvent::readFd(int fd_ )
             rs.bodyLen = atoi(Llen);
             Lhead =Lhead + strlen("\r\n\r\n");
             rs.headLen  = Lhead - rs.buf;
-            if( (rs.headLen + rs.bodyLen) > rs.buflen )
+            if( (rs.headLen + rs.bodyLen) > rs.bufLen )
             {
                 char *newbuf = new char[rs.headLen + rs.bodyLen + 1];
                 memcpy(newbuf, rs.buf, rs.curIndex);
                 *(newbuf + rs.curIndex) = 0;
                 delete[] rs.buf;
                 rs.buf = newbuf;
-                rs.buflen = rs.headLen + rs.bodyLen + 1;
+                rs.bufLen = rs.headLen + rs.bodyLen + 1;
                 //TODO:reset someting
             }
             if(rs.headLen + rs.bodyLen >  rs.curIndex)
@@ -283,7 +283,7 @@ int SocketEvent::processReaded(ProRead& r)
     if( ibody == NULL || ilen == NULL )
         return 0;
     ibody += strlen("\r\n\r\n");
-    ilen = atoi("Length");
+    ilen = atoi(ilen);
     r.bodyLen = ilen;
     r.headLen = ibody - r.buf;
     if( r.curIndex >=(r.bodyLen + r.headLen))
@@ -310,7 +310,7 @@ void SocketEvent::process(struct epoll_event* ev_ )
 
 void SocketEvent::readClientData(int fd_)
 {
-    ItrClient itr = _client.find(fd);
+    ItrClient itr = _client.find(fd_);
     if( itr == _client.end() )
     {
         closeFd( fd_ );

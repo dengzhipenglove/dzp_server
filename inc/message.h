@@ -5,7 +5,7 @@
 
 class Message{
 public:
-    Message(char * data, int len, int fd):
+    Message(char * data, int len, int fd)
     {
         data_ = std::string(data,len);
         fd_ = fd;
