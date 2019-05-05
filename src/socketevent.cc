@@ -327,6 +327,9 @@ void SocketEvent::closeFd(int fd_ )
     }
 
 }
-
+int SocketEvent::sendFd(int fd_ )
+{
+    
+}
 
 } //namespace dzp
