@@ -141,7 +141,7 @@ void SocketEvent::processListenReq()
     ev.events = EPOLLIN | EPOLLERR;
     ev.data.fd = connFd_;
     setNoBlock( connFd_ );
-    _client[ connfd_ ] = LinkedClient( connFd_ );
+    _client[ connFd_ ] = LinkedClient( connFd_ );
     if( epoll_ctl( epollFd, EPOLL_CTL_ADD, connFd_, &ev) == -1 )
     {
         perror( "epoll_ctl: conn_sock" );
@@ -283,8 +283,7 @@ int SocketEvent::processReaded(ProRead& r)
     if( ibody == NULL || ilen == NULL )
         return 0;
     ibody += strlen("\r\n\r\n");
-    ilen = atoi(ilen);
-    r.bodyLen = ilen;
+    r.bodyLen = atoi(ilen);
     r.headLen = ibody - r.buf;
     if( r.curIndex >=(r.bodyLen + r.headLen))
         return 1;
@@ -317,7 +316,7 @@ void SocketEvent::readClientData(int fd_)
     }
 }
 
-void closeFd(int fd_ )
+void SocketEvent::closeFd(int fd_ )
 {
     epoll_ctl( epollFd, EPOLL_CTL_DEL, fd_, 0) ;
     close( fd_ );

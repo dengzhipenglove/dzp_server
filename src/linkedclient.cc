@@ -1,6 +1,6 @@
 #include"linkedclient.h"
 
-ProRead& LinkedClient::getDataRef( fd )
+ProRead& LinkedClient::getDataRef()
 {
     return rs_;
 }
