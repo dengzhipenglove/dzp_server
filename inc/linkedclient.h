@@ -4,7 +4,7 @@
 
 class LinkedClient{
 public:
-    LinkedClient(fd ):iFd_(fd){}
+    LinkedClient(int fd ):iFd_(fd){}
     ProRead& getDataRef();
 private:
     int iFd_;

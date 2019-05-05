@@ -23,7 +23,6 @@ class SocketEvent
         void processListenReq();
         void setNoBlock( int fd_ );
         int setSocketOpt( int fd_ );
-        int closeFd( int fd_ );
         int readFd(int fd_ );
         int sendFd(int fd_ );
         void process(struct epoll_event* ev_ );
@@ -32,8 +31,8 @@ class SocketEvent
         int processReaded(ProRead& r);
 
     private:  
-        typedef map<int,LinkedClient>::iterator ItrClient;
-        typedef map<int, LinkedClient> ClientType;
+        typedef std::map<int,LinkedClient>::iterator ItrClient;
+        typedef std::map<int, LinkedClient> ClientType;
         
         int listenFd; 
         int listenPort;
