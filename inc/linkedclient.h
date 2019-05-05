@@ -2,7 +2,7 @@
 #define _LINEEDCLIENTED_H_
 #include "commondef.h"
 
-LinkedClient{
+class LinkedClient{
 public:
     LinkedClient(fd ):iFd_(fd){}
     ProRead& getDataRef();
