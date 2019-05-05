@@ -38,17 +38,17 @@ void DataManager::pushReq(Message*m)
 Message* DataNanager::popReq()
 {
     Message* re =NULL;
-    pthread_mutex_lock(&lock);
+    pthread_mutex_lock(&lock_);
     if(requests_.size() == 0)
-        pthread_cont_wait(&cond_,&lock);
+        pthread_cont_wait(&cond_, &lock_);
     if(requests_.size() == 0)
     {
-        pthread_mutex_unlock(&locak_);
+        pthread_mutex_unlock(&lock_);
         return NULL;
     }
 
     re = requests_.front();
     requests_.pop();
-    pthread_mutex_unlock(&locak_);
+    pthread_mutex_unlock(&lock_);
     return re;
 }

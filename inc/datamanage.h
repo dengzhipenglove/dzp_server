@@ -7,7 +7,7 @@
 class DataManager{
 public:
     DataManager()
-    static DataManager* instance()
+    static DataManager* instance();
     void pushReq(Message* m);
     Message* popReq();
 
