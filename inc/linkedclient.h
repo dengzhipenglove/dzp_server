@@ -2,6 +2,8 @@
 #define _LINEEDCLIENTED_H_
 #include "commondef.h"
 
+namespace dzp {
+
 class LinkedClient{
 public:
     LinkedClient(int fd ):iFd_(fd){}
@@ -11,6 +13,6 @@ private:
     ProRead rs_;
     //unsigned int  
 };
-
+}
 
 #endif

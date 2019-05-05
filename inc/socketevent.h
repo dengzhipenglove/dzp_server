@@ -31,8 +31,8 @@ class SocketEvent
         int processReaded(ProRead& r);
 
     private:  
-        typedef std::map<int,LinkedClient>::iterator ItrClient;
-        typedef std::map<int, LinkedClient> ClientType;
+        typedef std::map<int,dzp::LinkedClient>::iterator ItrClient;
+        typedef std::map<int, dzp::LinkedClient> ClientType;
         
         int listenFd; 
         int listenPort;
