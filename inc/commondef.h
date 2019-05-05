@@ -24,6 +24,13 @@ struct ProRead{
     {
         buf = tmpbuf;
     }
+    ~ProRead()
+    {
+        if(buf)
+        {
+            delete[] buf;
+        }
+    }
     
     int curIndex;
     int headLen;

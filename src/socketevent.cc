@@ -185,15 +185,17 @@ int SocketEvent::setSocketOpt( int fd_ )
 
 int SocketEvent::readFd(int fd_ )
 {
-    // 读取的数据及其指针
-    int iCurIndex=0;
-    int iHeadLen=0;
-    int iBodylen=0;
-    char*buf = NULL;
-    int buflen = 0;
+    //改为引用
+    ItrClient itr = _client.find(fd_);
+    if(itr == _client.end())
+    {
+        return -1;
+    }
+    ProRead& rs = itr->second.getDataRef();
+    //rs.
     //TODO:assign value
     int rlen = 0;
-    rlen = recv( fd_, buf + iCurIndex, buflen -iCurIndex-1, 0 );  
+    rlen = recv( fd_, rs.buf + rs.curIndex, rs.buflen -rs.curIndex-1, 0 );  
     if(rlen == -1)
     {
         if( errno != EINTR && errno != EAGAIN)
@@ -213,33 +215,33 @@ int SocketEvent::readFd(int fd_ )
         closeFd( fd_ );
     }
     else{
-        iCurIndex += rlen;
-        if(iHeadLen == 0)
+        rs.curIndex += rlen;
+        if(rs.headLen == 0)
         {
-            char* Lhead = strstr(buf,"\r\n\r\n");
-            char* Llen = strstr(buf, "Length:");
+            char* Lhead = strstr(rs.buf,"\r\n\r\n");
+            char* Llen = strstr(rs.buf, "Length:");
             if( Lhead == NULL || Llen == NULL )
             {
                 return 0;
             }
-            iBodylen = atoi(Llen);
+            rs.bodyLen = atoi(Llen);
             Lhead =Lhead + strlen("\r\n\r\n");
-            iHeadLen  = Lhead - buf;
-            if( (iHeadLen + iBodylen)>buflen )
+            rs.headLen  = Lhead - rs.buf;
+            if( (rs.headLen + rs.bodyLen) > rs.buflen )
             {
-                char *newbuf = new char[iHeadLen+ibodylen+1];
-                memcpy(newbuf, buf,iCurIndex);
-                *(newbuf+iCurIndex) = 0;
-                delete[] buf;
-                buf = newbuf;
-                buflen = iHeadLen+ibodylen+1;
+                char *newbuf = new char[rs.headLen + rs.bodyLen + 1];
+                memcpy(newbuf, rs.buf, rs.curIndex);
+                *(newbuf + rs.curIndex) = 0;
+                delete[] rs.buf;
+                rs.buf = newbuf;
+                rs.buflen = rs.headLen + rs.bodyLen + 1;
                 //TODO:reset someting
             }
-            if(iHeadLen + iBodylen > iCurIndex)
+            if(rs.headLen + rs.bodyLen >  rs.curIndex)
             {
                 return 0;//继续读取
             }
-            Message* d = new Message(buf,iHeadLen + iBodylen ,fd_);
+            Message* d = new Message(rs.buf,rs.headLen + rs.bodyLen ,fd_);
             //data
             DataManager::instance()->pushReq(d);
 
