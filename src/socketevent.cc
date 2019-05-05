@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "socketevent.h"
-//#include "linkedclient.h"
+#include "linkedclient.h"
 
 #include "message.h"
 #include "datamanage.h"

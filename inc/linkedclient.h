@@ -1,5 +1,5 @@
-#ifndef _LINKEDCLIENTED_H_
-#define _LINEEDCLIENTED_H_
+#ifndef D_LINKEDCLIENTED_H_
+#define D_LINEEDCLIENTED_H_
 #include "commondef.h"
 
 namespace dzp {
