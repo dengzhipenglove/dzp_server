@@ -14,8 +14,8 @@ public:
 
 private:
     static DataManager* instance_;
-    queue< Message* > requests_;
-    queue< Message* > responses_;
+    std::queue< Message* > requests_;
+    std::queue< Message* > responses_;
     //pthread_cond_t cond_;
     //pthread_mutex_t lock_;
 
