@@ -351,6 +351,7 @@ int SocketEvent::sendFd(int fd_ )
     {
         realSendData( (*itr)->getFd(), (*itr)->rawData(), (*itr)->DataLength());
     }
+    return 0;
 }
 
 int SocketEvent::realSendData(int fd, const char * data, int size)
@@ -366,8 +367,10 @@ int SocketEvent::realSendData(int fd, const char * data, int size)
         else if( sd < 0 )
         {
             if( errno == EINTR)
+            {
                 sd = 0;
                 continue;
+            }
             else if( errno == EAGAIN)
             {
                 //TODO 睡觉时间太长
