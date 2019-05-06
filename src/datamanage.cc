@@ -57,7 +57,7 @@ void DataManager::pushSnd(Message* m)
 {
     pthread_mutex_lock(&lock_);
 
-    responses_.push(m);
+    responses_.push_back(m);
 
     pthread_cond_signal(&cond_);
     pthread_mutex_unlock(&lock_);   
@@ -67,7 +67,7 @@ void DataManager::popSndList(std::list<Message*>& l)
 {
     pthread_mutex_lock(&lock_);
     //if(responses_.size() == 0)
-    for(std::queue< Message* >::iterator itr = responses_.begin(); itr != itr.end(); itr++)
+    for(std::vector< Message* >::iterator itr = responses_.begin(); itr != itr.end(); itr++)
     {
         l.push_back(*itr);
         SocketEvent::instance()->modFdOp((*itr)->getFd(), false);
