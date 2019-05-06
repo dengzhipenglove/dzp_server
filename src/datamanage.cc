@@ -1,7 +1,7 @@
 
 #include <pthread.h>
 #include"datamanage.h"
-
+#include "message.h"
 
 pthread_mutex_t lock_ = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_ = PTHREAD_COND_INITIALIZER;
@@ -51,4 +51,27 @@ Message* DataManager::popReq()
     requests_.pop();
     pthread_mutex_unlock(&lock_);
     return re;
+}
+
+void DataManager::pushSnd(Message* m)
+{
+    pthread_mutex_lock(&lock_);
+
+    responses_.push(m);
+
+    pthread_cond_signal(&cond_);
+    pthread_mutex_unlock(&lock_);   
+}
+
+void DataManager::popSndList(std::list<Message*> l)
+{
+    pthread_mutex_lock(&lock_);
+    //if(responses_.size() == 0)
+    for(std::queue< Message* >::iterator itr = responses_.begin(); itr != itr.end(); itr++)
+    {
+        l.push_back(*itr);
+        SocketEvent::instance()->modFdOp((*itr)->getFd(), false);
+    }
+    responses_.clear();
+    pthread_mutex_unlock(&lock_);
 }

@@ -13,7 +13,7 @@ class SocketEvent
     public:
         SocketEvent();
         ~SocketEvent();
-        bool instance();
+        static SocketEvent* instance();
         bool epollInit();
         bool createListener();
         void epollCreate();
@@ -29,8 +29,11 @@ class SocketEvent
         void readClientData(int fd_);
         void closeFd(int fd_ );
         int processReaded(ProRead& r);
+        int modFdOp(int fd ,bool b=true);
+        int realSendData(int fd, char * data, int size);
 
     private:  
+        static SocketEvent* instance_;
         typedef std::map<int,dzp::LinkedClient>::iterator ItrClient;
         typedef std::map<int, dzp::LinkedClient> ClientType;
         

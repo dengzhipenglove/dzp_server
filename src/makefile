@@ -3,7 +3,7 @@
 
 
 CC :=g++
-FLAGS = -g
+FLAGS = -g -Wall
 
 DIR_INCLUDE := ../inc
 DIR_SOURCE := ../src

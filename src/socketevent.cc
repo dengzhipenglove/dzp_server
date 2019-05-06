@@ -24,6 +24,9 @@
 
 namespace dzp {
 
+pthread_mutex_t sock_mutex = PTHREAD_MUTEX_INITIALIZER;
+SocketEvent* SocketEvent::instance_=NULL;
+
 SocketEvent::SocketEvent():listenFd(-1),epollFd(-1)
 {
 
@@ -37,9 +40,16 @@ bool SocketEvent::epollInit()
 {
     return true;
 }
-bool SocketEvent::instance()
+SocketEvent* SocketEvent::instance()
 {
-    return true;
+    if(instance_ == NULL)
+    {
+        pthread_mutex_lock(&sock_mutex);
+        if(instance_ == NULL)
+            instance_ = new SocketEvent();
+        pthread_mutex_unlock(&sock_mutex);
+    }
+    return instance_;
 }
 
 bool SocketEvent::createListener()
@@ -204,8 +214,7 @@ int SocketEvent::readFd(int fd_ )
         }
         else
         {
-            /* code */
-        
+            return 0;
         }
         return -1;
         
@@ -213,6 +222,7 @@ int SocketEvent::readFd(int fd_ )
     else if(rlen == 0)
     {
         closeFd( fd_ );
+        return -1;
     }
     else{
         rs.curIndex += rlen;
@@ -244,17 +254,21 @@ int SocketEvent::readFd(int fd_ )
             Message* d = new Message(rs.buf,rs.headLen + rs.bodyLen ,fd_);
             //data
             DataManager::instance()->pushReq(d);
-
-
-
+            int status;
+            while( 1 == (status =processReaded( rs )) )
+            {
+                Message* d = new Message(rs.buf,rs.headLen + rs.bodyLen ,fd_);
+                DataManager::instance()->pushReq(d);
+            }
+            if( status == -1)
+            {
+                closeFd( fd_ );
+            }
 
         } 
 
     }
-
-
-
-
+    return 0;
 }
 /*
     int curIndex;
@@ -327,9 +341,58 @@ void SocketEvent::closeFd(int fd_ )
     }
 
 }
+
+//TODO::可改为多线程发送
 int SocketEvent::sendFd(int fd_ )
 {
+    std::list<Message*> ml;
+    DataManager::instance()->popSndList(ml);
+    for(std::list<Message*>::iterator itr = ml.begin(); itr != ml.end(); itr++)
+    {
+        realSendData( (*itr)->getFd(), (*itr)->rawData(), (*itr)->DataLength());
+    }
+}
 
+int SocketEvent::realSendData(int fd, char * data, int size)
+{
+    int sd;
+    for(int se   =0; sended < size; sended = sended + sd )
+    {
+        sd = send(fd, data + sended , size - sended , 0 );
+        if( sd == 0 )
+        {
+            return o;
+        }
+        else if( sd < 0 )
+        {
+            if( errno == EINTR)
+                sd = 0;
+                continue;
+            else if( errno == EAGAIN)
+            {
+                //TODO 睡觉时间太长
+                sleep(1);
+                sd = 0;
+                continue;
+            }
+            else
+            {
+                return -1;
+            }
+            
+        }
+    }
+    return 0;
+}
+
+int SocketEvent::modFdOp(int fd ,bool b)
+{
+    ev.data.fd = fd;
+    if(b)
+        ev.events = EPOLLIN|EPOLLOUT|EPOLLERR;
+    else
+        ev.events = EPOLLIN|EPOLLERR;
+    epoll_ctl(epollFd, EPOLL_CTL_MOD, fd, &ev);    
 }
 
 } //namespace dzp
