@@ -1,6 +1,6 @@
 
 #include <pthread.h>
-#include"datamanage.h"
+#include "datamanage.h"
 #include "socketevent.h"
 #include "message.h"
 
@@ -71,7 +71,7 @@ void DataManager::popSndList(std::list<Message*>& l)
     for(std::vector< Message* >::iterator itr = responses_.begin(); itr != responses_.end(); itr++)
     {
         l.push_back(*itr);
-        SocketEvent::instance()->modFdOp((*itr)->getFd(), false);
+        dzp::SocketEvent::instance()->modFdOp((*itr)->getFd(), false);
     }
     responses_.clear();
     pthread_mutex_unlock(&lock_);
