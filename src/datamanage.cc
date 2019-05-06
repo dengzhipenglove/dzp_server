@@ -63,7 +63,7 @@ void DataManager::pushSnd(Message* m)
     pthread_mutex_unlock(&lock_);   
 }
 
-void DataManager::popSndList(std::list<Message*> l)
+void DataManager::popSndList(std::list<Message*>& l)
 {
     pthread_mutex_lock(&lock_);
     //if(responses_.size() == 0)
