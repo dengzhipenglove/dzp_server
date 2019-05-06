@@ -14,9 +14,9 @@ public:
     {
         return fd_;
     }
-    char* rawData()
+    const char* rawData()
     {
-        if(string.empty())
+        if(data_.empty())
             return NULL;
         return data_.c_str();
     }
@@ -26,7 +26,7 @@ public:
     }
 private:
     std::string data_;
-    std::string fd_;
+    int fd_;
 };
 
 
