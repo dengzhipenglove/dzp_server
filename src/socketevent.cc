@@ -353,15 +353,15 @@ int SocketEvent::sendFd(int fd_ )
     }
 }
 
-int SocketEvent::realSendData(int fd, char * data, int size)
+int SocketEvent::realSendData(int fd, const char * data, int size)
 {
     int sd;
-    for(int se   =0; sended < size; sended = sended + sd )
+    for(int sended = 0; sended < size; sended = sended + sd )
     {
         sd = send(fd, data + sended , size - sended , 0 );
         if( sd == 0 )
         {
-            return o;
+            return 0;
         }
         else if( sd < 0 )
         {
@@ -393,6 +393,7 @@ int SocketEvent::modFdOp(int fd ,bool b)
     else
         ev.events = EPOLLIN|EPOLLERR;
     epoll_ctl(epollFd, EPOLL_CTL_MOD, fd, &ev);    
+    return 0;
 }
 
 } //namespace dzp

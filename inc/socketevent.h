@@ -30,7 +30,7 @@ class SocketEvent
         void closeFd(int fd_ );
         int processReaded(ProRead& r);
         int modFdOp(int fd ,bool b=true);
-        int realSendData(int fd, char * data, int size);
+        int realSendData(int fd,const char * data, int size);
 
     private:  
         static SocketEvent* instance_;
