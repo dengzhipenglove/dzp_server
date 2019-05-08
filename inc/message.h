@@ -24,9 +24,12 @@ public:
     {
         return data_.length();
     }
+    int parseRawData();
 private:
     std::string data_;
     int fd_;
+public:
+    
 };
 
 

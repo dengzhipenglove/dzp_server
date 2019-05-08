@@ -5,11 +5,12 @@
 #include<pthread>
 
 class Worker{
-    Worker(int workId, pthread_t threadId):worker_id_(workId),pthread_id_(threadId){}
+    Worker(int workId, pthread_t threadId):m_workerId(workId),m_pthreadId(threadId){}
     void run()
+    void doWork()
 private:
-    int worker_id_;
-    pthread_t pthread_id_;
+    int m_workerId;
+    pthread_t m_pthreadId;
 
 };
 #endif
