@@ -3,9 +3,14 @@
 #include <sys/epoll.h>
 
 #include <map>
+#include <string>
+
 
 #include "linkedclient.h"
 #include "commondef.h"
+
+using std::string;
+
 namespace dzp {
 
 class SocketEvent

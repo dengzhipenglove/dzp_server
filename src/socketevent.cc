@@ -17,6 +17,10 @@
 #include "message.h"
 #include "datamanage.h"
 #include "commondef.h"
+#include "config.h"
+
+#include <string>
+using std::string;
 
 #define _MAX_FDSIZE_    2048
 #define _LISTEN_PORT_   11111
@@ -29,7 +33,10 @@ SocketEvent* SocketEvent::instance_=NULL;
 
 SocketEvent::SocketEvent():listenFd(-1),epollFd(-1)
 {
+    memset(listenAddr, 0x0, sizeof(listenAddr));
 
+    snprintf(listenAddr, sizeof(listenAddr), "%s", Config::instance()->getValue("LISTEN_ADDR").c_str());
+    listenPort = atoi(Config::instance()->getValue("LISTEN_PORT").c_str());
 }
 SocketEvent::~SocketEvent()
 {
@@ -112,6 +119,7 @@ void SocketEvent::epollAddListener( int listenfd_ )
 
 void SocketEvent::run()
 {
+    createListener();
     if( epollFd == -1 )
     {
         printf("run failed:epollFd=-1");

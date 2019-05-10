@@ -50,6 +50,4 @@ int Message::parseRawData()
         return -2;
     }
     //TODO: Json parse;
-
-
 }
