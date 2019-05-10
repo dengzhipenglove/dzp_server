@@ -12,7 +12,7 @@ void Worker::run()
 }
 void Worker::doWork()
 {
-    Message* msg = DataManager::instance->popReq();
+    Message* msg = DataManager::instance()->popReq();
     if(msg == NULL)
         return ;
     if(msg->parseRawData() < 0)
