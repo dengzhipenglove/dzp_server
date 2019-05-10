@@ -3,14 +3,14 @@
 #include "message.h"
 #include "stdio.h"
 
-void Woker::run()
+void Worker::run()
 {
     while(true)
     {
         doWork();
     }
 }
-void Woker::doWork()
+void Worker::doWork()
 {
     Message* msg = DataManager::instance->popReq();
     if(msg == NULL)
