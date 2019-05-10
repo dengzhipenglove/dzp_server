@@ -11,9 +11,9 @@ char serverConfigFileName[256]="../etc/server.cfg";
 
 int main(int argc,char *argv[])
 {
-    DataManager->instance();
+    DataManager::instance();
     //dzp::SocketEvent server;
-    dzp::SocketEvent::instance->run();
+    dzp::SocketEvent::instance()->run();
     cout<<dzp::Config::instance()->getValue("LISTEN_ADDR")<<endl;
     cout<<dzp::Config::instance()->getValue("LISTEN_POTR")<<endl;
 
