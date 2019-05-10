@@ -20,6 +20,7 @@ class SocketEvent
         ~SocketEvent();
         static SocketEvent* instance();
         bool epollInit();
+        void ini();
         bool createListener();
         void epollCreate();
         void epollAddListener( int listenfd_ );

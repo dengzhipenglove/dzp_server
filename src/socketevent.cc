@@ -97,6 +97,17 @@ bool SocketEvent::createListener()
     return true;
 }
 
+void SocketEvent::ini()
+{
+    createListener();
+    epollCreate();
+    while(true)
+    {
+        run();
+        sleep(1);
+    }
+}
+
 void SocketEvent::epollCreate()
 {
     epollFd = epoll_create( _MAX_EPOLL_EVENT_ );
@@ -119,7 +130,7 @@ void SocketEvent::epollAddListener( int listenfd_ )
 
 void SocketEvent::run()
 {
-    createListener();
+    
     if( epollFd == -1 )
     {
         printf("run failed:epollFd=-1");

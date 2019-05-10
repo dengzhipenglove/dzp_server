@@ -13,7 +13,8 @@ int main(int argc,char *argv[])
 {
     DataManager::instance();
     //dzp::SocketEvent server;
-    dzp::SocketEvent::instance()->run();
+    dzp::SocketEvent::instance()->ini();
+
     cout<<dzp::Config::instance()->getValue("LISTEN_ADDR")<<endl;
     cout<<dzp::Config::instance()->getValue("LISTEN_POTR")<<endl;
 
