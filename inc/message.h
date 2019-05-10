@@ -29,6 +29,10 @@ private:
     std::string data_;
     int fd_;
 public:
+    std::string m_strCmd;
+    int m_nOuterFd;
+    int m_nUid;
+    int m_nGid;
     
 };
 
